@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Health Information System</title>
+    <style>
+        /* ---------- RESET & BASIC STYLES ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f0f7f0;
+            padding: 20px;
+        }
+
+        /* ---------- CSS GRID LAYOUT (using grid-template-areas) ---------- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            
+            /* GRID setup */
+            display: grid;
+            grid-template-areas: 
+                "header header"
+                "nav nav"
+                "main sidebar"
+                "footer footer";
+            grid-template-columns: 2fr 1fr;  /* main takes 2 parts, sidebar 1 part */
+            gap: 0;
+        }
+
+        /* Assign grid areas */
+        .header { grid-area: header; }
+        .nav { grid-area: nav; }
+        .main { grid-area: main; }
+        .sidebar { grid-area: sidebar; }
+        .footer { grid-area: footer; }
+
+        /* ---------- HEADER STYLES ---------- */
+        .header {
+            background-color: #2c6e5c;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .header p {
+            font-size: 16px;
+        }
+
+        /* ---------- NAVIGATION MENU (Flexbox) ---------- */
+        .nav {
+            background-color: #1e4a3b;
+        }
+        .nav ul {
+            display: flex;              /* FLEXBOX for horizontal menu */
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        .nav li a {
+            display: block;
+            padding: 15px 25px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease; /* TRANSITION */
+        }
+        /* Hover effect */
+        .nav li a:hover {
+            background-color: #ffaa33;
+            color: #1e4a3b;
+        }
+
+        /* ---------- MAIN CONTENT (sections & articles) ---------- */
+        .main {
+            padding: 20px;
+        }
+        /* Each section */
+        .section {
+            margin-bottom: 35px;
+            border-left: 5px solid #2c6e5c;
+            padding-left: 15px;
+        }
+        .section h2 {
+            color: #2c6e5c;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        /* Article cards side-by-side using FLEXBOX */
+        .articles-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;    /* wraps on small screens */
+            margin-top: 10px;
+        }
+        /* Individual article card */
+        .card {
+            background-color: #fef9e6;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 18px;
+            flex: 1;            /* makes cards equal width */
+            min-width: 200px;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s; /* TRANSITION for hover */
+        }
+        /* Hover effect on cards */
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            background-color: #fff7e8;
+        }
+        .card h3 {
+            color: #1e4a3b;
+            margin-bottom: 12px;
+        }
+        /* Advanced selector :before - adds a small icon before h3 */
+        .card h3::before {
+            content: "🩺 ";
+            font-size: 1.2em;
+        }
+        .card p {
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        .read-more {
+            color: #2c6e5c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .read-more:hover {
+            text-decoration: underline;
+        }
+
+        /* ---------- SIDEBAR (quick links & announcements) ---------- */
+        .sidebar {
+            background-color: #eef4ea;
+            padding: 20px;
+        }
+        .sidebar h3 {
+            color: #2c6e5c;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ffaa33;
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+        .announcement, .quick-links {
+            background-color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+        }
+        .announcement p {
+            margin: 10px 0;
+            padding: 5px;
+        }
+        /* Advanced selector :nth-child() - alternate background */
+        .announcement p:nth-child(odd) {
+            background-color: #f9f2df;
+        }
+        .quick-links ul {
+            list-style: none;
+        }
+        .quick-links li {
+            margin: 12px 0;
+        }
+        .quick-links a {
+            text-decoration: none;
+            color: #1e4a3b;
+            display: block;
+            padding: 6px 10px;
+            transition: all 0.2s;
+        }
+        /* Hover effect on quick links */
+        .quick-links a:hover {
+            background-color: #ffaa33;
+            border-radius: 20px;
+            padding-left: 20px;
+        }
+        /* Advanced selector :after */
+        .quick-links a::after {
+            content: " ➜";
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .quick-links a:hover::after {
+            opacity: 1;
+        }
+
+        /* ---------- FOOTER ---------- */
+        .footer {
+            background-color: #1e4a3b;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            font-size: 14px;
+        }
+
+        /* ---------- KEYFRAMES ANIMATION (for a little fun) ---------- */
+        @keyframes fadeSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Keyframes for a "pop up" effect (scale + fade) */
+@keyframes popUp {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    80% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Apply the animation to the header h1 */
+.header h1 {
+    animation: popUp 0.5s ease-out;
+}
+        /* Apply animation to the first article card */
+        .card:first-child {
+            animation: fadeSlide 0.8s ease-out;
+        }
+
+        /* ---------- RESPONSIVE DESIGN (Media Queries) ---------- */
+        /* For tablets and smaller screens, change grid to single column */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-areas: 
+                    "header"
+                    "nav"
+                    "main"
+                    "sidebar"
+                    "footer";
+                grid-template-columns: 1fr;
+            }
+            .nav ul {
+                flex-direction: column;
+                text-align: center;
+            }
+            .articles-container {
+                flex-direction: column;
+            }
+        }
+
+        /* Small phones */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .header h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- HEADER (semantic) -->
+    <header class="header">
+        <h1>🏥 Community Health Information System</h1>
+        <p>Your trusted source for local health news and wellness tips</p>
+    </header>
+
+    <!-- NAVIGATION (semantic nav) -->
+    <nav class="nav">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- MAIN CONTENT (semantic main) -->
+    <main class="main">
+        <!-- SECTION 1 -->
+        <section class="section">
+            <h2>📋 Preventive Health</h2>
+            <div class="articles-container">
+                <article class="card">
+                    <h3>Nutrition Tips</h3>
+                    <p>Eating a balanced diet boosts immunity. Our community offers free workshops on meal planning.</p>
+                    <a href="#" class="read-more">Learn more →</a>
+                </article>
+                <article class="card">
+                    <h3>Exercise Guidelines</h3>
+                    <p>150 minutes of moderate activity per week can reduce heart disease risk. Join local walking groups!</p>
+                    <a href="#" class="read-more">Join challenge →</a>
+                </article>
+                <article class="card">
+                    <h3>Mental Wellness</h3>
+                    <p>Stress management and social connection are vital. Access free mental health first aid courses.</p>
+                    <a href="#" class="read-more">Find resources →</a>
+                </article>
+            </div>
+        </section>
+
+        <!-- SECTION 2 -->
+        <section class="section">
+            <h2>🚑 Community Services & Alerts</h2>
+            <div class="articles-container">
+                <article class="card">
+                    <h3>Vaccination Clinics</h3>
+                    <p>Free flu & COVID-19 boosters every Thursday at community centers. Walk-ins welcome.</p>
+                    <a href="#" class="read-more">See schedule →</a>
+                </article>
+                <article class="card">
+                    <h3>Heatwave Preparedness</h3>
+                    <p>Stay hydrated, check on elderly neighbors. Our helpline provides real-time updates.</p>
+                    <a href="#" class="read-more">Alert details →</a>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- SIDEBAR (semantic aside) -->
+    <aside class="sidebar">
+        <div class="announcement">
+            <h3>📢 Announcements</h3>
+            <p>📅 Free health screening – June 15, 2025 (9AM–2PM)</p>
+            <p>🆕 New telehealth service available 24/7</p>
+            <p>🧑‍🏫 Virtual nutrition class – register by Friday</p>
+            <p>💉 Back-to-school vaccines – walk-in available</p>
+        </div>
+        <div class="quick-links">
+            <h3>🔗 Quick Resources</h3>
+            <ul>
+                <li><a href="#">Emergency Contacts</a></li>
+                <li><a href="#">Health Library</a></li>
+                <li><a href="#">Clinic Appointments</a></li>
+                <li><a href="#">Volunteer Opportunities</a></li>
+                <li><a href="#">Report Health Issue</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- FOOTER (semantic footer) -->
+    <footer class="footer">
+        <p>&copy; 2025 Community Health Information System | All information is for educational purposes.</p>
+    </footer>
+</div>
+
+</body>
+</html>
